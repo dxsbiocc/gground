@@ -111,8 +111,10 @@ GeomRoundRect <- ggplot2::ggproto(
             index <- rep(seq_len(nrow(data)), each = 4)
 
             new <- data[index, aesthetics, drop = FALSE]
-            new$x <- vctrs::vec_interleave(data$xmin, data$xmax, data$xmax, data$xmin)
-            new$y <- vctrs::vec_interleave(data$ymax, data$ymax, data$ymin, data$ymin)
+            # order is very important here for the correct drawing of the rectangle in
+            # polar coordinates
+            new$x <- vctrs::vec_interleave(data$xmin, data$xmin, data$xmax, data$xmax)
+            new$y <- vctrs::vec_interleave(data$ymin, data$ymax, data$ymax, data$ymin)
             new$group <- index
 
             ggplot2:::ggname("geom_round_rect", ggforce::GeomShape$draw_panel(
@@ -144,7 +146,7 @@ GeomRoundRect <- ggplot2::ggproto(
             coords$linetype, linejoin, lineend,
             SIMPLIFY = FALSE)
 
-            ggplot2:::ggname("geom_custom_rect", do.call(grid::grobTree, rects))
+            ggplot2:::ggname("geom_round_rect", do.call(grid::grobTree, rects))
         }
     },
     # 定义了如何绘制图例中的键

@@ -24,15 +24,15 @@
 #' @param inherit.aes If FALSE, overrides the default aesthetics.
 #'
 #' @examples
-#' # geom_bar is designed to make it easy to create bar charts that show
+#' # geom_round_bar is designed to make it easy to create bar charts that show
 #' # counts (or sums of weights)
 #' g <- ggplot(mpg, aes(class))
 #' # Number of cars in each class:
-#' g + geom_bar()
+#' g + geom_round_bar()
 #' # Total engine displacement of each class
-#' g + geom_bar(aes(weight = displ))
+#' g + geom_round_bar(aes(weight = displ))
 #' # Map class to y instead to flip the orientation
-#' ggplot(mpg) + geom_bar(aes(y = class))
+#' ggplot(mpg) + geom_round_bar(aes(y = class))
 geom_round_bar <- function(
         mapping = NULL, data = NULL,
         stat = "count", position = "stack",

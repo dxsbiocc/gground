@@ -25,7 +25,7 @@ geom_round_col(
   position = "stack",
   ...,
   just = 0.5,
-  radius = grid::unit(0.1, "npc"),
+  radius = grid::unit(2, "pt"),
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -69,13 +69,13 @@ it counts the number of cases at each x position. \code{geom_round_col()} uses
 \code{stat_identity()}: it leaves the data as is.
 }
 \examples{
-# geom_bar is designed to make it easy to create bar charts that show
+# geom_round_bar is designed to make it easy to create bar charts that show
 # counts (or sums of weights)
 g <- ggplot(mpg, aes(class))
 # Number of cars in each class:
-g + geom_bar()
+g + geom_round_bar()
 # Total engine displacement of each class
-g + geom_bar(aes(weight = displ))
+g + geom_round_bar(aes(weight = displ))
 # Map class to y instead to flip the orientation
-ggplot(mpg) + geom_bar(aes(y = class))
+ggplot(mpg) + geom_round_bar(aes(y = class))
 }

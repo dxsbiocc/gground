@@ -26,6 +26,8 @@ Collate:
     'geom-round-boxplot.R'
     'geom-round-col.R'
     'geom-round-corssbar.R'
+    'geom-round-half-boxplot.R'
+    'geom-round-histogram.R'
     'geom-round-tile.R'
 Suggests: 
     testthat (>= 3.0.0)

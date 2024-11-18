@@ -5,7 +5,7 @@ geom_round_col <- function(mapping = NULL, data = NULL,
                      position = "stack",
                      ...,
                      just = 0.5,
-                     radius = grid::unit(0.1, "npc"),
+                     radius = grid::unit(2, "pt"),
                      na.rm = FALSE,
                      show.legend = NA,
                      inherit.aes = TRUE) {
