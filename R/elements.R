@@ -42,7 +42,7 @@
 #' @rdname element_round_rect
 element_round_rect <- function(fill = NULL, colour = NULL, linewidth = NULL,
                                linetype = NULL, color = NULL, inherit.blank = FALSE,
-                               radius = NULL) {
+                               radius = grid::unit(2, 'pt')) {
 
     if (!is.null(color))  colour <- color
     structure(
@@ -69,6 +69,6 @@ element_grob.element_round_rect <- function(
         fill = fill %||% element$fill,
         lty = linetype %||% element$linetype)
     # radius
-    r <- radius %||% element$radius
+    r <- element$radius %||% radius
     grid::roundrectGrob(x, y, width, height, r = r, gp = gp, ...)
 }
