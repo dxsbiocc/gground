@@ -98,8 +98,7 @@ GeomRoundRect <- ggplot2::ggproto(
         }
         data
     },
-    # 定义了如何在绘图面板上绘制图形。通常需要将数据转换到绘图坐标系，
-    # 并使用 grid 包的图形对象（如 rectGrob、pointsGrob 等）来绘制
+    # Defined how to draw graphics on the drawing panel.
     draw_panel = function(data, panel_params, coord,
                           lineend = "butt", linejoin = "round",
                           radius = grid::unit(1, "pt")) {

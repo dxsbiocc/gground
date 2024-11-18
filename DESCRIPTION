@@ -1,12 +1,10 @@
 Package: gground
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Enhancing ggplot2 with round Geoms and Themes
+Version: 1.0.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("dengxsh", , , "920466915@qq.com", role = "cre")
+Description: gground is an extension package for ggplot2 that is used to generate rounded-shaped graphics, such as rounded bar charts and box plots, to help users create more aesthetically pleasing and unique data visualization effects.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
