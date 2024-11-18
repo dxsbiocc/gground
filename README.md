@@ -1,18 +1,20 @@
-# gground <img src="images/gground.png" width="145px" height="140px" align="right" style="padding-left:10px;background-color:white;" />
+# gground <img src="images/gground.png" width="140px" height="140px" align="right" style="padding-left:10px;background-color:white;" />
 
-**gground** 是一个用于 `R` 的数据可视化工具包，专注于生成圆角矩形形状的图形，例如圆角柱状图和箱线图，帮助用户创建更加美观和独特的数据可视化效果。
-
----
-
-## 特性
-
-- 创建圆角矩形柱状图和箱线图。
-- 与 `ggplot2` 完美集成，支持定制化图形风格。
-- 高度可配置的参数，适用于各种数据可视化需求。
+**gground** is an extension package for `ggplot2` that is used to generate rounded-shaped graphics, 
+such as rounded bar charts and box plots, to help users create more aesthetically pleasing and 
+unique data visualization effects.
 
 ---
 
-## install
+## Features
+
+- Create rounded rectangle column charts and box plots.
+- Perfectly integrated with `ggplot2`, supports customized graphic styles.
+- Highly configurable parameters, suitable for various data visualization needs.
+
+---
+
+## Installation
 
 You can install the released version of `gground` from [CRAN](https://CRAN.R-project.org) with:
 
