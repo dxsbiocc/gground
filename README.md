@@ -16,9 +16,7 @@ unique data visualization effects.
 
 ## Installation
 
-You can install the released version of `gground` from [CRAN](https://CRAN.R-project.org) with:
-
-And the development version from [GitHub](https://github.com/) with
+You can install the development version of `gground` from [GitHub](https://github.com/) with
 ```R
 if (!require("devtools", quietly = TRUE))
   install.packages("devtools")
