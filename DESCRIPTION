@@ -10,11 +10,9 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends:
     ggplot2 (>= 3.3.6),
-    grid (>= 4.4.2),
-    R (>= 3.3.0)
-Imports:
     grid,
-    ggplot2,
+    rlang
+Imports:
     vctrs,
     ggforce
 Collate: 
