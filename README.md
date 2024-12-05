@@ -67,6 +67,17 @@ p + geom_round_boxplot(aes(fill = class), outlier.colour = 'red',
 
 ![](vignettes/figures/geom_round_boxplot.png)
 
+add errorbar
+```r
+p + geom_round_boxplot(aes(fill = class), outlier.colour = 'red', 
+                       outlier.shape = 1, radius = unit(0.1, 'inches'),
+                       errorbar.draw = TRUE) + 
+  geom_jitter(width = 0.2) +
+  theme_minimal()
+```
+
+![](vignettes/figures/geom_round_boxplot_error.png)
+
 ### 4. geom_round_rect
 
 ``` r
