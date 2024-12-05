@@ -370,20 +370,17 @@ GeomRoundBoxplot <- ggplot2::ggproto(
             if (errorbar.length > 1 | errorbar.length < 0) {
                 stop("Error bar length must be between 0 and 1.")
             }
-            xrange <- data$xmax - data$xmin
-            error_length_add <- xrange / 2
-            error_length_add <- error_length_add * (1 - errorbar.length)
+            error_length_add <- (data$xmax - data$xmin) / 2 * errorbar.length
 
             error_whiskers <- data.frame(
-                x = data$x + error_length_add,
-                xend = data$xmax - error_length_add,
+                x = data$x - error_length_add,
+                xend = data$x + error_length_add,
                 y = c(data$ymax, data$ymin),
                 yend = c(data$ymax, data$ymin),
                 alpha = NA,
                 common,
                 stringsAsFactors = FALSE
             )
-
             error_grob <- ggplot2::GeomSegment$draw_panel(error_whiskers, panel_params, coord)
         } else {
             error_grob <- NULL
