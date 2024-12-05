@@ -1,4 +1,4 @@
-# gground <img src="images/gground.png" width="140px" height="140px" align="right" style="padding-left:10px;background-color:white;"/>
+# gground <img src="vignettes/figures/gground.png" width="140px" height="140px" align="right" style="padding-left:10px;background-color:white;"/>
 
 **gground** is an extension package for `ggplot2` that is used to generate rounded-shaped graphics, such as rounded bar charts and box plots, to help users create more aesthetically pleasing and unique data visualization effects.
 
@@ -42,7 +42,7 @@ ggplot(mpg, aes(y = class)) +
   theme(legend.position = "top")
 ```
 
-![](images/geom_round_bar.png)
+![](vignettes/figures/geom_round_bar.png)
 
 ### 2. geom_round_col
 
@@ -52,7 +52,7 @@ ggplot(df, aes(trt, outcome)) +
   geom_round_col()
 ```
 
-![](images/geom_round_col.png)
+![](vignettes/figures/geom_round_col.png)
 
 ### 3. geom_round_boxplot
 
@@ -65,7 +65,7 @@ p + geom_round_boxplot(aes(fill = class), outlier.colour = 'red',
   theme_minimal()
 ```
 
-![](images/geom_round_boxplot.png)
+![](vignettes/figures/geom_round_boxplot.png)
 
 ### 4. geom_round_rect
 
@@ -81,7 +81,7 @@ ggplot(df, aes(xmin = x - w / 2, xmax = x + w / 2, ymin = y, ymax = y + 1)) +
   geom_round_rect(aes(fill = z), colour = "grey50", radius = unit(5, 'mm'))
 ```
 
-![](images/geom_round_rect.png)
+![](vignettes/figures/geom_round_rect.png)
 
 ### 5. geom_round_tile
 
@@ -92,7 +92,7 @@ ggplot(mpg) +
   theme_minimal()
 ```
 
-![](images/geom_round_tile.png)
+![](vignettes/figures/geom_round_tile.png)
 
 ### 6. geom_round_crossbar
 
@@ -110,7 +110,7 @@ p + geom_round_crossbar(aes(ymin = lower, ymax = upper), width = 0.2) +
   theme_minimal()
 ```
 
-![](images/geom_round_crossbar.png)
+![](vignettes/figures/geom_round_crossbar.png)
 
 ### 7. geom_round_histogram
 
@@ -120,17 +120,17 @@ ggplot(diamonds, aes(price, fill = cut)) +
   theme_minimal()
 ```
 
-![](images/geom_round_histogram.png)
+![](vignettes/figures/geom_round_histogram.png)
 
-### 8. geom_round_half_boxplot
+### 8. geom_half_round_boxplot
 
 ``` r
 ggplot(iris, aes(x = Species, y = Petal.Width, fill = Species)) +
-  geom_round_half_boxplot() +
+  geom_half_round_boxplot() +
   theme_minimal()
 ```
 
-![](images/geom_round_half_boxplot.png)
+![](vignettes/figures/geom_half_round_boxplot.png)
 
 ### 9. polar
 
@@ -144,7 +144,7 @@ group_by(mpg, class) %>%
     theme_minimal()
 ```
 
-![](images/polar.png)
+![](vignettes/figures/polar.png)
 
 ### 10. element_round_rect
 
@@ -156,4 +156,4 @@ ggplot(mpg) +
   )
 ```
 
-![](images/element_round_rect.png)
+![](vignettes/figures/element_round_rect.png)

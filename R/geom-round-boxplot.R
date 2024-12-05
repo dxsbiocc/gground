@@ -52,6 +52,10 @@
 #'   are significantly different.
 #' @param notchwidth For a notched box plot, width of the notch relative to
 #'   the body (defaults to `notchwidth = 0.5`).
+#' @param errorbar.draw Draw horizontal whiskers at the top and bottom (the IQR).
+#'  Defaults to `TRUE`.
+#' @param errorbar.length Length of the horizontal whiskers (errorbar). Defaults
+#' to half the width of the boxplot.
 #' @param staplewidth The relative width of staples to the width of the box.
 #'   Staples mark the ends of the whiskers with a line.
 #' @param varwidth If `FALSE` (default) make a standard box plot. If
@@ -116,30 +120,34 @@
 #'    stat = "identity"
 #'  )
 #' }
-geom_round_boxplot <- function(mapping = NULL, data = NULL,
-                         stat = "boxplot", position = "dodge2",
-                         ...,
-                         outliers = TRUE,
-                         outlier.colour = NULL,
-                         outlier.color = NULL,
-                         outlier.fill = NULL,
-                         outlier.shape = 19,
-                         outlier.size = 1.5,
-                         outlier.stroke = 0.5,
-                         outlier.alpha = NULL,
-                         radius = grid::unit(1, 'pt'),
-                         notch = FALSE,
-                         notchwidth = 0.5,
-                         staplewidth = 0,
-                         varwidth = FALSE,
-                         na.rm = FALSE,
-                         orientation = NA,
-                         show.legend = NA,
-                         inherit.aes = TRUE) {
-
+geom_round_boxplot <- function(mapping = NULL,
+                               data = NULL,
+                               stat = "boxplot",
+                               position = "dodge2",
+                               ...,
+                               outliers = TRUE,
+                               outlier.colour = NULL,
+                               outlier.color = NULL,
+                               outlier.fill = NULL,
+                               outlier.shape = 19,
+                               outlier.size = 1.5,
+                               outlier.stroke = 0.5,
+                               outlier.alpha = NULL,
+                               radius = grid::unit(1, 'pt'),
+                               notch = FALSE,
+                               notchwidth = 0.5,
+                               errorbar.draw = TRUE,
+                               errorbar.length = 0.5,
+                               staplewidth = 0,
+                               varwidth = FALSE,
+                               na.rm = FALSE,
+                               orientation = NA,
+                               show.legend = NA,
+                               inherit.aes = TRUE) {
     # varwidth = TRUE is not compatible with preserve = "total"
     if (is.character(position)) {
-        if (varwidth == TRUE) position <- ggplot2::position_dodge2(preserve = "single")
+        if (varwidth == TRUE)
+            position <- ggplot2::position_dodge2(preserve = "single")
     } else {
         if (identical(position$preserve, "total") & varwidth == TRUE) {
             cli::cli_warn("Can't preserve total widths when {.code varwidth = TRUE}.")
@@ -169,6 +177,8 @@ geom_round_boxplot <- function(mapping = NULL, data = NULL,
             radius = radius,
             notch = notch,
             notchwidth = notchwidth,
+            errorbar.draw = errorbar.draw,
+            errorbar.length = errorbar.length,
             staplewidth = staplewidth,
             varwidth = varwidth,
             na.rm = na.rm,
@@ -183,190 +193,257 @@ geom_round_boxplot <- function(mapping = NULL, data = NULL,
 #' @export
 draw_key_round_boxplot <- function (data, params, size)
 {
-    gp <- grid::gpar(col = data$colour %||% "grey20",
-               fill = ggplot2::fill_alpha(data$fill %||% "white", data$alpha),
-               lwd = (data$linewidth %||% 0.5) * ggplot2::.pt,
-               lty = data$linetype %||% 1,
-               lineend = params$lineend %||% "butt",
-               linejoin = params$linejoin %||% "mitre")
+    gp <- grid::gpar(
+        col = data$colour %||% "grey20",
+        fill = ggplot2::fill_alpha(data$fill %||% "white", data$alpha),
+        lwd = (data$linewidth %||% 0.5) * ggplot2::.pt,
+        lty = data$linetype %||% 1,
+        lineend = params$lineend %||% "butt",
+        linejoin = params$linejoin %||% "mitre"
+    )
     if (isTRUE(params$flipped_aes)) {
         grid::grobTree(
             grid::linesGrob(c(0.1, 0.25), 0.5),
             grid::linesGrob(c(0.75, 0.9), 0.5),
-            grid::roundrectGrob(r = min(params$radius, grid::unit(2, "pt")),
-                             height = 0.5, width = 0.75),
-            grid::linesGrob(0.5, c(0.125, 0.875)), gp = gp)
+            grid::roundrectGrob(
+                r = min(params$radius, grid::unit(2, "pt")),
+                height = 0.5,
+                width = 0.75
+            ),
+            grid::linesGrob(0.5, c(0.125, 0.875)),
+            gp = gp
+        )
     }
     else {
         grid::grobTree(
             grid::linesGrob(0.5, c(0.1, 0.25)),
             grid::linesGrob(0.5, c(0.75, 0.9)),
-            grid::roundrectGrob(r = min(params$radius, grid::unit(2, "pt")),
-                                height = 0.5, width = 0.75),
-            grid::linesGrob(c(0.125, 0.875), 0.5), gp = gp)
+            grid::roundrectGrob(
+                r = min(params$radius, grid::unit(2, "pt")),
+                height = 0.5,
+                width = 0.75
+            ),
+            grid::linesGrob(c(0.125, 0.875), 0.5),
+            gp = gp
+        )
     }
 }
 
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomRoundBoxplot <- ggplot2::ggproto("GeomRoundBoxplot", ggplot2::Geom,
+GeomRoundBoxplot <- ggplot2::ggproto(
+    "GeomRoundBoxplot",
+    ggplot2::Geom,
 
-                       # need to declare `width` here in case this geom is used with a stat that
-                       # doesn't have a `width` parameter (e.g., `stat_identity`).
-                       extra_params = c("na.rm", "width", "orientation", "outliers"),
+    # need to declare `width` here in case this geom is used with a stat that
+    # doesn't have a `width` parameter (e.g., `stat_identity`).
+    extra_params = c("na.rm", "width", "orientation", "outliers"),
 
-                       setup_params = function(data, params) {
-                           params$flipped_aes <- has_flipped_aes(data, params)
-                           params
-                       },
+    setup_params = function(data, params) {
+        params$flipped_aes <- has_flipped_aes(data, params)
+        params
+    },
 
-                       setup_data = function(data, params) {
-                           data$flipped_aes <- params$flipped_aes
-                           data <- ggplot2::flip_data(data, params$flipped_aes)
-                           data$width <- data$width %||%
-                               params$width %||% (resolution(data$x, FALSE, TRUE) * 0.9)
+    setup_data = function(data, params) {
+        data$flipped_aes <- params$flipped_aes
+        data <- ggplot2::flip_data(data, params$flipped_aes)
+        data$width <- data$width %||%
+            params$width %||% (resolution(data$x, FALSE, TRUE) * 0.9)
 
-                           if (isFALSE(params$outliers)) {
-                               data$outliers <- NULL
-                           }
+        if (isFALSE(params$outliers)) {
+            data$outliers <- NULL
+        }
 
-                           if (!is.null(data$outliers)) {
-                               suppressWarnings({
-                                   out_min <- vapply(data$outliers, min, numeric(1))
-                                   out_max <- vapply(data$outliers, max, numeric(1))
-                               })
+        if (!is.null(data$outliers)) {
+            suppressWarnings({
+                out_min <- vapply(data$outliers, min, numeric(1))
+                out_max <- vapply(data$outliers, max, numeric(1))
+            })
 
-                               data$ymin_final  <- pmin(out_min, data$ymin)
-                               data$ymax_final  <- pmax(out_max, data$ymax)
-                           }
+            data$ymin_final  <- pmin(out_min, data$ymin)
+            data$ymax_final  <- pmax(out_max, data$ymax)
+        }
 
-                           # if `varwidth` not requested or not available, don't use it
-                           if (is.null(params) || is.null(params$varwidth) || !params$varwidth || is.null(data$relvarwidth)) {
-                               data$xmin <- data$x - data$width / 2
-                               data$xmax <- data$x + data$width / 2
-                           } else {
-                               # make `relvarwidth` relative to the size of the largest group
-                               data$relvarwidth <- data$relvarwidth / max(data$relvarwidth)
-                               data$xmin <- data$x - data$relvarwidth * data$width / 2
-                               data$xmax <- data$x + data$relvarwidth * data$width / 2
-                           }
-                           data$width <- NULL
-                           if (!is.null(data$relvarwidth)) data$relvarwidth <- NULL
+        # if `varwidth` not requested or not available, don't use it
+        if (is.null(params) ||
+            is.null(params$varwidth) ||
+            !params$varwidth || is.null(data$relvarwidth)) {
+            data$xmin <- data$x - data$width / 2
+            data$xmax <- data$x + data$width / 2
+        } else {
+            # make `relvarwidth` relative to the size of the largest group
+            data$relvarwidth <- data$relvarwidth / max(data$relvarwidth)
+            data$xmin <- data$x - data$relvarwidth * data$width / 2
+            data$xmax <- data$x + data$relvarwidth * data$width / 2
+        }
+        data$width <- NULL
+        if (!is.null(data$relvarwidth))
+            data$relvarwidth <- NULL
 
-                           ggplot2::flip_data(data, params$flipped_aes)
-                       },
+        ggplot2::flip_data(data, params$flipped_aes)
+    },
 
-                       draw_group = function(self, data, panel_params, coord, lineend = "butt",
-                                             linejoin = "mitre", fatten = 2, outlier.colour = NULL,
-                                             outlier.fill = NULL, outlier.shape = 19,
-                                             outlier.size = 1.5, outlier.stroke = 0.5,
-                                             outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5,
-                                             staplewidth = 0, varwidth = FALSE, flipped_aes = FALSE,
-                                             radius = grid::unit(1, 'pt')) {
-                           data <- ggplot2:::check_linewidth(data, snake_class(self))
-                           data <- ggplot2::flip_data(data, flipped_aes)
-                           # this may occur when using geom_boxplot(stat = "identity")
-                           if (nrow(data) != 1) {
-                               cli::cli_abort(c(
-                                   "Can only draw one boxplot per group.",
-                                   "i"= "Did you forget {.code aes(group = ...)}?"
-                               ))
-                           }
+    draw_group = function(self,
+                          data,
+                          panel_params,
+                          coord,
+                          lineend = "butt",
+                          linejoin = "mitre",
+                          fatten = 2,
+                          outlier.colour = NULL,
+                          outlier.fill = NULL,
+                          outlier.shape = 19,
+                          outlier.size = 1.5,
+                          outlier.stroke = 0.5,
+                          outlier.alpha = NULL,
+                          notch = FALSE,
+                          notchwidth = 0.5,
+                          errorbar.draw = FALSE,
+                          errorbar.length = 0.5,
+                          staplewidth = 0,
+                          varwidth = FALSE,
+                          flipped_aes = FALSE,
+                          radius = grid::unit(1, 'pt')) {
+        data <- ggplot2:::check_linewidth(data, snake_class(self))
+        data <- ggplot2::flip_data(data, flipped_aes)
+        # this may occur when using geom_boxplot(stat = "identity")
+        if (nrow(data) != 1) {
+            cli::cli_abort(
+                c("Can only draw one boxplot per group.", "i" = "Did you forget {.code aes(group = ...)}?")
+            )
+        }
 
-                           common <- list(
-                               colour = data$colour,
-                               linewidth = data$linewidth,
-                               linetype = data$linetype,
-                               fill = ggplot2::fill_alpha(data$fill, data$alpha),
-                               group = data$group
-                           )
+        common <- list(
+            colour = data$colour,
+            linewidth = data$linewidth,
+            linetype = data$linetype,
+            fill = ggplot2::fill_alpha(data$fill, data$alpha),
+            group = data$group
+        )
 
-                           whiskers <- ggplot2:::data_frame0(
-                               x = c(data$x, data$x),
-                               xend = c(data$x, data$x),
-                               y = c(data$upper, data$lower),
-                               yend = c(data$ymax, data$ymin),
-                               alpha = c(NA_real_, NA_real_),
-                               !!!common,
-                               .size = 2
-                           )
-                           whiskers <- ggplot2::flip_data(whiskers, flipped_aes)
+        whiskers <- ggplot2:::data_frame0(
+            x = c(data$x, data$x),
+            xend = c(data$x, data$x),
+            y = c(data$upper, data$lower),
+            yend = c(data$ymax, data$ymin),
+            alpha = c(NA_real_, NA_real_),!!!common,
+            .size = 2
+        )
+        whiskers <- ggplot2::flip_data(whiskers, flipped_aes)
 
-                           box <- ggplot2:::data_frame0(
-                               xmin = data$xmin,
-                               xmax = data$xmax,
-                               ymin = data$lower,
-                               y = data$middle,
-                               ymax = data$upper,
-                               ynotchlower = ifelse(notch, data$notchlower, NA),
-                               ynotchupper = ifelse(notch, data$notchupper, NA),
-                               notchwidth = notchwidth,
-                               alpha = data$alpha,
-                               !!!common
-                           )
-                           box <- ggplot2::flip_data(box, flipped_aes)
+        box <- ggplot2:::data_frame0(
+            xmin = data$xmin,
+            xmax = data$xmax,
+            ymin = data$lower,
+            y = data$middle,
+            ymax = data$upper,
+            ynotchlower = ifelse(notch, data$notchlower, NA),
+            ynotchupper = ifelse(notch, data$notchupper, NA),
+            notchwidth = notchwidth,
+            alpha = data$alpha,!!!common
+        )
+        box <- ggplot2::flip_data(box, flipped_aes)
 
-                           if (!is.null(data$outliers) && length(data$outliers[[1]]) >= 1) {
-                               outliers <- ggplot2:::data_frame0(
-                                   y = data$outliers[[1]],
-                                   x = data$x[1],
-                                   colour = outlier.colour %||% data$colour[1],
-                                   fill = outlier.fill %||% data$fill[1],
-                                   shape = outlier.shape %||% data$shape[1],
-                                   size = outlier.size %||% data$size[1],
-                                   stroke = outlier.stroke %||% data$stroke[1],
-                                   fill = NA,
-                                   alpha = outlier.alpha %||% data$alpha[1],
-                                   .size = length(data$outliers[[1]])
-                               )
-                               outliers <- ggplot2::flip_data(outliers, flipped_aes)
+        if (!is.null(data$outliers) &&
+            length(data$outliers[[1]]) >= 1) {
+            outliers <- ggplot2:::data_frame0(
+                y = data$outliers[[1]],
+                x = data$x[1],
+                colour = outlier.colour %||% data$colour[1],
+                fill = outlier.fill %||% data$fill[1],
+                shape = outlier.shape %||% data$shape[1],
+                size = outlier.size %||% data$size[1],
+                stroke = outlier.stroke %||% data$stroke[1],
+                fill = NA,
+                alpha = outlier.alpha %||% data$alpha[1],
+                .size = length(data$outliers[[1]])
+            )
+            outliers <- ggplot2::flip_data(outliers, flipped_aes)
 
-                               outliers_grob <- ggplot2::GeomPoint$draw_panel(outliers, panel_params, coord)
-                           } else {
-                               outliers_grob <- NULL
-                           }
+            outliers_grob <- ggplot2::GeomPoint$draw_panel(outliers, panel_params, coord)
+        } else {
+            outliers_grob <- NULL
+        }
 
-                           if (staplewidth != 0) {
-                               staples <- ggplot2:::data_frame0(
-                                   x    = rep((data$xmin - data$x) * staplewidth + data$x, 2),
-                                   xend = rep((data$xmax - data$x) * staplewidth + data$x, 2),
-                                   y    = c(data$ymax, data$ymin),
-                                   yend = c(data$ymax, data$ymin),
-                                   alpha = c(NA_real_, NA_real_),
-                                   !!!common,
-                                   .size = 2
-                               )
-                               staples <- ggplot2::flip_data(staples, flipped_aes)
-                               staple_grob <- ggplot2::GeomSegment$draw_panel(
-                                   staples, panel_params, coord,
-                                   lineend = lineend
-                               )
-                           } else {
-                               staple_grob <- NULL
-                           }
+        if (errorbar.draw) {
+            if (errorbar.length > 1 | errorbar.length < 0) {
+                stop("Error bar length must be between 0 and 1.")
+            }
+            xrange <- data$xmax - data$xmin
+            error_length_add <- xrange / 2
+            error_length_add <- error_length_add * (1 - errorbar.length)
 
-                           ggplot2:::ggname("geom_round_boxplot", grid::grobTree(
-                               outliers_grob,
-                               staple_grob,
-                               ggplot2::GeomSegment$draw_panel(whiskers, panel_params, coord, lineend = lineend),
-                               GeomRoundCrossbar$draw_panel(
-                                   box,
-                                   panel_params,
-                                   coord,
-                                   fatten = fatten,
-                                   flipped_aes = flipped_aes,
-                                   radius = radius
-                               )
-                           ))
-                       },
+            error_whiskers <- data.frame(
+                x = data$x + error_length_add,
+                xend = data$xmax - error_length_add,
+                y = c(data$ymax, data$ymin),
+                yend = c(data$ymax, data$ymin),
+                alpha = NA,
+                common,
+                stringsAsFactors = FALSE
+            )
 
-                       draw_key = draw_key_round_boxplot,
+            error_grob <- ggplot2::GeomSegment$draw_panel(error_whiskers, panel_params, coord)
+        } else {
+            error_grob <- NULL
+        }
 
-                       default_aes = ggplot2::aes(weight = 1, colour = "grey20", fill = "white", size = NULL,
-                                         alpha = NA, shape = 19, linetype = "solid", linewidth = 0.5),
+        if (staplewidth != 0) {
+            staples <- ggplot2:::data_frame0(
+                x    = rep((data$xmin - data$x) * staplewidth + data$x, 2),
+                xend = rep((data$xmax - data$x) * staplewidth + data$x, 2),
+                y    = c(data$ymax, data$ymin),
+                yend = c(data$ymax, data$ymin),
+                alpha = c(NA_real_, NA_real_),!!!common,
+                .size = 2
+            )
+            staples <- ggplot2::flip_data(staples, flipped_aes)
+            staple_grob <- ggplot2::GeomSegment$draw_panel(staples, panel_params, coord, lineend = lineend)
+        } else {
+            staple_grob <- NULL
+        }
 
-                       required_aes = c("x|y", "lower|xlower", "upper|xupper", "middle|xmiddle", "ymin|xmin", "ymax|xmax"),
+        ggplot2:::ggname(
+            "geom_round_boxplot",
+            grid::grobTree(
+                outliers_grob,
+                error_grob,
+                staple_grob,
+                ggplot2::GeomSegment$draw_panel(whiskers, panel_params, coord, lineend = lineend),
+                GeomRoundCrossbar$draw_panel(
+                    box,
+                    panel_params,
+                    coord,
+                    fatten = fatten,
+                    flipped_aes = flipped_aes,
+                    radius = radius
+                )
+            )
+        )
+    },
 
-                       rename_size = TRUE
+    draw_key = draw_key_round_boxplot,
+
+    default_aes = ggplot2::aes(
+        weight = 1,
+        colour = "grey20",
+        fill = "white",
+        size = NULL,
+        alpha = NA,
+        shape = 19,
+        linetype = "solid",
+        linewidth = 0.5
+    ),
+
+    required_aes = c(
+        "x|y",
+        "lower|xlower",
+        "upper|xupper",
+        "middle|xmiddle",
+        "ymin|xmin",
+        "ymax|xmax"
+    ),
+
+    rename_size = TRUE
 )

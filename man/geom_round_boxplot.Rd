@@ -21,6 +21,8 @@ geom_round_boxplot(
   radius = grid::unit(1, "pt"),
   notch = FALSE,
   notchwidth = 0.5,
+  errorbar.draw = TRUE,
+  errorbar.length = 0.5,
   staplewidth = 0,
   varwidth = FALSE,
   na.rm = FALSE,
@@ -61,6 +63,12 @@ are significantly different.}
 
 \item{notchwidth}{For a notched box plot, width of the notch relative to
 the body (defaults to \code{notchwidth = 0.5}).}
+
+\item{errorbar.draw}{Draw horizontal whiskers at the top and bottom (the IQR).
+Defaults to \code{TRUE}.}
+
+\item{errorbar.length}{Length of the horizontal whiskers (errorbar). Defaults
+to half the width of the boxplot.}
 
 \item{staplewidth}{The relative width of staples to the width of the box.
 Staples mark the ends of the whiskers with a line.}
