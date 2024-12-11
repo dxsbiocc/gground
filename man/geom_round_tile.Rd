@@ -11,7 +11,7 @@ geom_round_rect(
   stat = "identity",
   position = "identity",
   ...,
-  radius = grid::unit(1, "pt"),
+  radius = unit(1, "pt"),
   linejoin = "round",
   na.rm = FALSE,
   show.legend = NA,

@@ -14,6 +14,9 @@ display in this key}
 
 \item{size}{Width and height of key in mm.}
 }
+\value{
+A grob representing the key.
+}
 \description{
 图例
 }
