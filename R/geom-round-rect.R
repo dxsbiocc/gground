@@ -56,9 +56,9 @@ draw_key_round_rect <- function(data, params, size) { # nocov start
         r = min(params$radius, unit(3, "pt")),
         default.units = "native",
         width = 1,
-        name = "lkey",
+        name = "rrkey",
         gp = gpar(
-            col = params$color %||% "white",
+            col = data$colour %||% "white",
             fill = alpha(data$fill %||% data$colour %||% "grey20", data$alpha),
             lty = data$linetype %||% 1,
             lwd = data$linewidth %||% 1
