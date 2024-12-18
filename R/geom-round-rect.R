@@ -45,31 +45,44 @@ geom_round_rect <- function(
 
 #' 图例
 #' @importFrom grid roundrectGrob unit gpar
-#' @importFrom ggplot2 alpha
+#' @importFrom ggplot2 fill_alpha
 #' @param data A single row data frame containing the scaled aesthetics to
 #'   display in this key
 #' @param params A list of additional parameters supplied to the geom.
 #' @param size Width and height of key in mm.
 #' @return A grob representing the key.
 draw_key_round_rect <- function(data, params, size) { # nocov start
-    roundrectGrob(
+    print(data$linewidth)
+    if (is.null(data$linewidth)) {
+        data$linewidth <- 0.5
+    }
+    lwd <- min(data$linewidth, min(size) / 4)
+
+    grob <- roundrectGrob(
         r = min(params$radius, unit(3, "pt")),
-        default.units = "native",
-        width = 1,
+        width = unit(1, "npc") - unit(lwd, "mm"),
+        height = unit(1, "npc") - unit(lwd, "mm"),
         name = "rrkey",
         gp = gpar(
-            col = data$colour %||% "white",
-            fill = alpha(data$fill %||% data$colour %||% "grey20", data$alpha),
+            col = data$colour %||% NA,
+            fill = fill_alpha(data$fill %||% "grey20", data$alpha),
             lty = data$linetype %||% 1,
-            lwd = data$linewidth %||% 1
+            lwd = lwd * .pt,
+            linejoin = params$linejoin %||% "mitre",
+            lineend = params$lineend %||% "butt"
         )
     )
+    # Magic number is 5 because we convert mm to cm (divide by 10) but we
+    # draw two lines in each direction (times 2)
+    attr(grob, "width")  <- lwd / 5
+    attr(grob, "height") <- lwd / 5
+    grob
 }
 
 #' @format NULL
-#' @importFrom ggplot2 ggproto Geom aes
+#' @importFrom ggplot2 ggproto Geom aes fill_alpha
 #' @importFrom ggforce GeomShape
-#' @importFrom grid roundrectGrob grobTree
+#' @importFrom grid roundrectGrob grobTree gpar
 #' @importFrom vctrs vec_interleave
 #' @usage NULL
 #' @export
@@ -109,16 +122,16 @@ GeomRoundRect <- ggproto(
             coords <- coord$transform(data, panel_params)
             rects <- mapply(function(xmin, xmax, ymin, ymax, fill, colour, alpha,
                                      linewidth, linetype, linejoin, lineend) {
-                grid::roundrectGrob(
+                roundrectGrob(
                     x = mean(c(xmin, xmax)),
                     y = mean(c(ymin, ymax)),
                     width = xmax - xmin,
                     height = ymax - ymin,
                     r = radius,
-                    default.units = "npc",
+                    default.units = "native",
                     just = "center",
-                    gp = grid::gpar(
-                        fill = alpha(fill, alpha),
+                    gp = gpar(
+                        fill = fill_alpha(fill, alpha),
                         col = colour,
                         lwd = linewidth * .pt,
                         lty = linetype,
