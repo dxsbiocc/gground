@@ -52,7 +52,6 @@ geom_round_rect <- function(
 #' @param size Width and height of key in mm.
 #' @return A grob representing the key.
 draw_key_round_rect <- function(data, params, size) { # nocov start
-    print(data$linewidth)
     if (is.null(data$linewidth)) {
         data$linewidth <- 0.5
     }
