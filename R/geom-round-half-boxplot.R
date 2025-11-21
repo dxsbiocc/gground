@@ -39,7 +39,7 @@ geom_half_round_boxplot <- function(mapping = NULL,
                                     side = "l",
                                     center = FALSE,
                                     nudge = 0,
-                                    radius = grid::unit(2, 'pt'),
+                                    radius = 2,
                                     outliers = TRUE,
                                     outlier.colour = NULL,
                                     outlier.color = NULL,
@@ -65,6 +65,11 @@ geom_half_round_boxplot <- function(mapping = NULL,
                     call. = FALSE)
             position$preserve <- "single"
         }
+    }
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
     }
 
     ggplot2:::check_bool(outliers)
@@ -122,7 +127,7 @@ GeomHalfRoundBoxplot <- ggplot2::ggproto(
                           side = "l",
                           center = FALSE,
                           nudge = nudge,
-                          radius = grid::unit(2, 'pt'),
+                          radius = 2,
                           outlier.colour = NULL,
                           outlier.fill = NULL,
                           outlier.shape = 19,
@@ -139,6 +144,12 @@ GeomHalfRoundBoxplot <- ggplot2::ggproto(
                 "Can't draw more than one boxplot per group. Did you forget aes(group = ...)?",
                 call. = FALSE
             )
+        }
+
+        if (grid::is.unit(radius)) {
+            radius <- radius
+        } else {
+            radius <- grid::unit(radius, "pt")
         }
 
         xrange <- data$xmax - data$xmin

@@ -22,11 +22,17 @@
 geom_round_crossbar <- function(mapping = NULL, data = NULL,
                           stat = "identity", position = "identity",
                           ...,
-                          fatten = 2.5, radius = grid::unit(1, 'pt'),
+                          fatten = 2.5,
+                          radius = 2,
                           na.rm = FALSE,
                           orientation = NA,
                           show.legend = NA,
                           inherit.aes = TRUE) {
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
+    }
     ggplot2::layer(
         data = data,
         mapping = mapping,
@@ -94,7 +100,12 @@ GeomRoundCrossbar <- ggplot2::ggproto("GeomRoundCrossbar", ggplot2::Geom,
 
                         draw_panel = function(self, data, panel_params, coord, lineend = "butt",
                                               linejoin = "mitre", fatten = 2.5, width = NULL,
-                                              flipped_aes = FALSE, radius = grid::unit(1, 'pt')) {
+                                              flipped_aes = FALSE, radius = 2) {
+                            if (grid::is.unit(radius)) {
+                                radius <- radius
+                            } else {
+                                radius <- grid::unit(radius, "pt")
+                            }
                             data <- ggplot2:::check_linewidth(data, ggplot2::snake_class(self))
                             data <- ggplot2::flip_data(data, flipped_aes)
 

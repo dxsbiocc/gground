@@ -18,7 +18,7 @@ geom_round_boxplot(
   outlier.size = 1.5,
   outlier.stroke = 0.5,
   outlier.alpha = NULL,
-  radius = grid::unit(1, "pt"),
+  radius = 2,
   notch = FALSE,
   notchwidth = 0.5,
   errorbar.draw = TRUE,

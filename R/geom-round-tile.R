@@ -103,10 +103,15 @@ geom_round_tile <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = "identity",
                       ...,
                       linejoin = "mitre",
-                      radius = grid::unit(1, "pt"),
+                      radius = 2,
                       na.rm = FALSE,
                       show.legend = NA,
                       inherit.aes = TRUE) {
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
+    }
     ggplot2::layer(
         data = data,
         mapping = mapping,

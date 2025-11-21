@@ -13,7 +13,7 @@ geom_half_round_boxplot(
   side = "l",
   center = FALSE,
   nudge = 0,
-  radius = grid::unit(2, "pt"),
+  radius = 2,
   outliers = TRUE,
   outlier.colour = NULL,
   outlier.color = NULL,

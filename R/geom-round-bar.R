@@ -37,12 +37,17 @@ geom_round_bar <- function(
         mapping = NULL, data = NULL,
         stat = "count", position = "stack",
         ...,
-        radius = grid::unit(2, "pt"),
+        radius = 2,
         just = 0.5,
         na.rm = FALSE,
         orientation = NA,
         show.legend = NA,
         inherit.aes = TRUE) {
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
+    }
     ggplot2::layer(
         data = data,
         mapping = mapping,
@@ -98,7 +103,12 @@ GeomRoundBar <- ggplot2::ggproto(
        )
        ggplot2::flip_data(data, params$flipped_aes)
     },
-    draw_panel = function(self, data, panel_params, coord, radius = grid::unit(2, "pt")) {
+    draw_panel = function(self, data, panel_params, coord, radius = 2) {
+        if (grid::is.unit(radius)) {
+            radius <- radius
+        } else {
+            radius <- grid::unit(radius, "pt")
+        }
         ggplot2::ggproto_parent(GeomRoundRect, self)$draw_panel(data, panel_params, coord, radius = radius)
     },
     rename_size = TRUE

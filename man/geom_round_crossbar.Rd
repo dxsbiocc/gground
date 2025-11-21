@@ -11,7 +11,7 @@ geom_round_crossbar(
   position = "identity",
   ...,
   fatten = 2.5,
-  radius = grid::unit(1, "pt"),
+  radius = 2,
   na.rm = FALSE,
   orientation = NA,
   show.legend = NA,

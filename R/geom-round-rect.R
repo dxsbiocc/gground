@@ -21,11 +21,16 @@ geom_round_rect <- function(
         mapping = NULL, data = NULL,
         stat = "identity", position = "identity",
         ...,
-        radius = unit(1, 'pt'),
+        radius = 2,
         linejoin = "round",
         na.rm = FALSE,
         show.legend = NA,
         inherit.aes = TRUE) {
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
+    }
     layer(
         data = data,
         mapping = mapping,
@@ -56,6 +61,12 @@ draw_key_round_rect <- function(data, params, size) { # nocov start
         data$linewidth <- 0.5
     }
     lwd <- min(data$linewidth, min(size) / 4)
+
+    if (grid::is.unit(params$radius)) {
+        params$radius <- params$radius
+    } else {
+        params$radius <- unit(params$radius, "pt")
+    }
 
     grob <- roundrectGrob(
         r = min(params$radius, unit(3, "pt")),
@@ -93,7 +104,12 @@ GeomRoundRect <- ggproto(
     # Defined how to draw graphics on the drawing panel.
     draw_panel = function(data, panel_params, coord,
                           lineend = "butt", linejoin = "round",
-                          radius = unit(1, "pt")) {
+                          radius = 2) {
+        if (grid::is.unit(radius)) {
+            radius <- radius
+        } else {
+            radius <- grid::unit(radius, "pt")
+        }
         data <- ggplot2:::check_linewidth(data, snake_class(self))
         if (!coord$is_linear()) {
             aesthetics <- setdiff(

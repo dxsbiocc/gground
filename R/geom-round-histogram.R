@@ -139,12 +139,11 @@ geom_round_histogram <- function(mapping = NULL, data = NULL,
                            ...,
                            binwidth = NULL,
                            bins = NULL,
-                           radius = grid::unit(2, "pt"),
+                           radius = 2,
                            na.rm = FALSE,
                            orientation = NA,
                            show.legend = NA,
                            inherit.aes = TRUE) {
-
     ggplot2::layer(
         data = data,
         mapping = mapping,

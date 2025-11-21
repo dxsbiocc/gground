@@ -11,7 +11,7 @@ geom_round_rect(
   stat = "identity",
   position = "identity",
   ...,
-  radius = unit(1, "pt"),
+  radius = 2,
   linejoin = "round",
   na.rm = FALSE,
   show.legend = NA,
@@ -25,7 +25,7 @@ geom_round_tile(
   position = "identity",
   ...,
   linejoin = "mitre",
-  radius = grid::unit(1, "pt"),
+  radius = 2,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE

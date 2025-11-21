@@ -133,7 +133,7 @@ geom_round_boxplot <- function(mapping = NULL,
                                outlier.size = 1.5,
                                outlier.stroke = 0.5,
                                outlier.alpha = NULL,
-                               radius = grid::unit(1, 'pt'),
+                               radius = 2,
                                notch = FALSE,
                                notchwidth = 0.5,
                                errorbar.draw = TRUE,
@@ -153,6 +153,12 @@ geom_round_boxplot <- function(mapping = NULL,
             cli::cli_warn("Can't preserve total widths when {.code varwidth = TRUE}.")
             position$preserve <- "single"
         }
+    }
+
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
     }
 
     ggplot2:::check_number_decimal(staplewidth)
@@ -191,8 +197,7 @@ geom_round_boxplot <- function(mapping = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-draw_key_round_boxplot <- function (data, params, size)
-{
+draw_key_round_boxplot <- function (data, params, size) {
     gp <- grid::gpar(
         col = data$colour %||% "grey20",
         fill = ggplot2::fill_alpha(data$fill %||% "white", data$alpha),
@@ -304,7 +309,12 @@ GeomRoundBoxplot <- ggplot2::ggproto(
                           staplewidth = 0,
                           varwidth = FALSE,
                           flipped_aes = FALSE,
-                          radius = grid::unit(1, 'pt')) {
+                          radius = 2) {
+        if (grid::is.unit(radius)) {
+            radius <- radius
+        } else {
+            radius <- grid::unit(radius, "pt")
+        }
         data <- ggplot2:::check_linewidth(data, snake_class(self))
         data <- ggplot2::flip_data(data, flipped_aes)
         # this may occur when using geom_boxplot(stat = "identity")

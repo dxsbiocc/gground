@@ -5,11 +5,15 @@ geom_round_col <- function(mapping = NULL, data = NULL,
                      position = "stack",
                      ...,
                      just = 0.5,
-                     radius = grid::unit(2, "pt"),
+                     radius = 2,
                      na.rm = FALSE,
                      show.legend = NA,
                      inherit.aes = TRUE) {
-
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
+    }
     ggplot2::layer(
         data = data,
         mapping = mapping,

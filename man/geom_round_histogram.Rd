@@ -12,7 +12,7 @@ geom_round_histogram(
   ...,
   binwidth = NULL,
   bins = NULL,
-  radius = grid::unit(2, "pt"),
+  radius = 2,
   na.rm = FALSE,
   orientation = NA,
   show.legend = NA,

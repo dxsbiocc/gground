@@ -11,7 +11,7 @@ geom_round_bar(
   stat = "count",
   position = "stack",
   ...,
-  radius = grid::unit(2, "pt"),
+  radius = 2,
   just = 0.5,
   na.rm = FALSE,
   orientation = NA,
@@ -25,7 +25,7 @@ geom_round_col(
   position = "stack",
   ...,
   just = 0.5,
-  radius = grid::unit(2, "pt"),
+  radius = 2,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
