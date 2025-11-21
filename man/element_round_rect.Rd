@@ -11,7 +11,7 @@ element_round_rect(
   linetype = NULL,
   color = NULL,
   inherit.blank = FALSE,
-  radius = grid::unit(2, "pt")
+  radius = 2
 )
 }
 \arguments{

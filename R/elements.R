@@ -42,8 +42,12 @@
 #' @rdname element_round_rect
 element_round_rect <- function(fill = NULL, colour = NULL, linewidth = NULL,
                                linetype = NULL, color = NULL, inherit.blank = FALSE,
-                               radius = grid::unit(2, 'pt')) {
-
+                               radius = 2) {
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
+    }
     if (!is.null(color))  colour <- color
     structure(
         list(fill = fill, colour = colour, linewidth = linewidth,
@@ -58,10 +62,15 @@ element_round_rect <- function(fill = NULL, colour = NULL, linewidth = NULL,
 #' @export
 element_grob.element_round_rect <- function(
         element, x = 0.5, y = 0.5, width = 1, height = 1,
-        radius = grid::unit(2, 'pt'),
+        radius = 2,
         fill = NULL, colour = NULL, linewidth = NULL, linetype = NULL,
         ...) {
 
+    if (grid::is.unit(radius)) {
+        radius <- radius
+    } else {
+        radius <- grid::unit(radius, "pt")
+    }
     # The gp settings can override element_gp
     gp <- grid::gpar(
         lwd = linewidth %||% element$linewidth,
