@@ -106,7 +106,7 @@ GeomRoundCrossbar <- ggplot2::ggproto("GeomRoundCrossbar", ggplot2::Geom,
                             } else {
                                 radius <- grid::unit(radius, "pt")
                             }
-                            data <- ggplot2:::check_linewidth(data, ggplot2::snake_class(self))
+                            data <- check_linewidth(data, ggplot2::snake_class(self))
                             data <- ggplot2::flip_data(data, flipped_aes)
 
                             middle <- transform(data, x = xmin, xend = xmax, yend = y, linewidth = linewidth * fatten, alpha = NA)

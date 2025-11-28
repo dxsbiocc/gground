@@ -110,7 +110,7 @@ GeomRoundRect <- ggproto(
         } else {
             radius <- grid::unit(radius, "pt")
         }
-        data <- ggplot2:::check_linewidth(data, snake_class(self))
+        data <- check_linewidth(data, snake_class(self))
         if (!coord$is_linear()) {
             aesthetics <- setdiff(
                 names(data), c("x", "y", "xmin", "xmax", "ymin", "ymax")

@@ -1,6 +1,6 @@
 Package: gground
 Title: Enhancing ggplot2 with round Geoms and Themes
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     person("dengxsh", , , "920466915@qq.com", role = "cre")
 Description: gground is an extension package for ggplot2 that is used to generate rounded-shaped graphics, such as rounded bar charts and box plots, to help users create more aesthetically pleasing and unique data visualization effects.
@@ -25,6 +25,7 @@ Collate:
     'geom-round-half-boxplot.R'
     'geom-round-histogram.R'
     'geom-round-tile.R'
+    'utils.R'
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

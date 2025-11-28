@@ -315,7 +315,7 @@ GeomRoundBoxplot <- ggplot2::ggproto(
         } else {
             radius <- grid::unit(radius, "pt")
         }
-        data <- ggplot2:::check_linewidth(data, snake_class(self))
+        data <- check_linewidth(data, snake_class(self))
         data <- ggplot2::flip_data(data, flipped_aes)
         # this may occur when using geom_boxplot(stat = "identity")
         if (nrow(data) != 1) {
