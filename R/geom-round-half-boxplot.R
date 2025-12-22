@@ -162,17 +162,15 @@ GeomHalfRoundBoxplot <- ggplot2::ggproto(
             group = data$group,
             stringsAsFactors = FALSE
         )
-
         whiskers <- data.frame(
             x = data$x,
             xend = data$x,
-            y = c(data$upper, data$lower),
-            yend = c(data$ymax, data$ymin),
+            y = c(data$upper, data$lower, data$lower),
+            yend = c(data$ymax, data$upper, data$ymin),
             alpha = NA,
             common,
             stringsAsFactors = FALSE
         )
-
         # Adjust whisker position based on nudge (extra spacing between geom and middle)
         # If side == right, move whisker to right and vice versa
         if (side == "r") {
