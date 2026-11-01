@@ -34,7 +34,7 @@
 #' @param position Position adjustment, either as a string, or the result of a
 #' call to a position adjustment function.
 #' @param ... Other arguments passed on to `layer()`.
-#' @param linejoin Line join style (round, mitre, bevel).
+#' @param linejoin Line join style (round, mitre, bevel). Defaults to "round".
 #' @param radius The radius of the rounded corners.
 #' @param na.rm If `FALSE`, the default, missing values are removed with a warning.
 #' If `TRUE`, missing values are silently removed.
@@ -102,7 +102,7 @@
 geom_round_tile <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = "identity",
                       ...,
-                      linejoin = "mitre",
+                      linejoin = "round",
                       radius = 2,
                       na.rm = FALSE,
                       show.legend = NA,
@@ -143,7 +143,7 @@ draw_key_round_tile <- function (data, params, size)
             col = data$colour %||% NA,
             fill = ggplot2::fill_alpha(data$fill %||% "grey20", data$alpha),
             lty = data$linetype %||% 1, lwd = lwd * ggplot2::.pt,
-            linejoin = params$linejoin %||% "mitre",
+            linejoin = params$linejoin %||% "round",
             lineend = params$lineend %||% "butt")
         )
 }

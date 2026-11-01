@@ -24,7 +24,7 @@ geom_round_tile(
   stat = "identity",
   position = "identity",
   ...,
-  linejoin = "mitre",
+  linejoin = "round",
   radius = 2,
   na.rm = FALSE,
   show.legend = NA,
@@ -56,7 +56,7 @@ call to a position adjustment function.}
 
 \item{radius}{The radius of the rounded corners.}
 
-\item{linejoin}{Line join style (round, mitre, bevel).}
+\item{linejoin}{Line join style (round, mitre, bevel). Defaults to "round".}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with a warning.
 If \code{TRUE}, missing values are silently removed.}
